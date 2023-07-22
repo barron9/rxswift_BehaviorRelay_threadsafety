@@ -1,5 +1,5 @@
 # rxswift_BehaviorRelay_threadsafety
-example project to reproduce the problem and fix it
+## example project to reproduce the problem and fix of it
 there is 0.4 ms latency between datasource delegate numberOfItemsInSection and itemsAtRow methods , so if any background thread changes the rxbehavioralrelay it will call ```collectionView.reloadData()``` on main thread but it goes down continue executing if done for several times because pf sync issue of brelay.
 
 //55225 - 54823 = 402 microsecond / 0.4ms in iphone 14 pro simulator
