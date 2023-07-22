@@ -21,7 +21,26 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         
         return count
     }
-```    
+```
+
+another way to crash
+```swift
+func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        DispatchQueue.global(qos: .background).async {
+            
+            crashvm.shared.productList.accept(
+                [Product(name: "2name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd")]
+            )
+        }
+        // Always use the correct method to dequeue the cell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell, let data:Product = crashvm.shared.productList.value[safe: indexPath.row] else {
+            return UICollectionViewCell()
+        }
+        //print("point2")
+```
+
 ```
 2023-07-22 17:44:47.944362+0300 test123[4206:4954563] *** Assertion failure in -[UICollectionView _createPreparedCellForItemAtIndexPath:withLayoutAttributes:applyAttributes:isFocused:notify:], UICollectionView.m:3390
 2023-07-22 17:44:47.975588+0300 test123[4206:4954563] *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'the cell returned from -collectionView:cellForItemAtIndexPath: does not have a reuseIdentifier - cells must be retrieved by calling -dequeueReusableCellWithReuseIdentifier:forIndexPath:'
