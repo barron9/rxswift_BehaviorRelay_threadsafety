@@ -134,7 +134,7 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         printMachineTimeInMicroseconds(inn:"cellForItemAt") //55225 - 54823 = 402 microsecond / 0.4ms in iphone 14 pro simulator
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
             
             crashvm.shared.productList.accept(
                 [Product(name: "2name", price: 10, description: "asd"),
