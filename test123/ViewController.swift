@@ -101,6 +101,8 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         let count = crashvm.shared.productList.value.count
         //fix for this issue is >
         //DispatchQueue.main.async {
+        //or
+        //DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 2.6){
         crashvm.shared.productList.accept(
             [Product(name: "name", price: 10, description: "asd"),
              Product(name: "name1", price: 11, description: "asd1"),
