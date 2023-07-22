@@ -28,20 +28,22 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 another way to crash
 ```swift
-func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        DispatchQueue.global(qos: .background).async {
-            
-            crashvm.shared.productList.accept(
-                [Product(name: "2name", price: 10, description: "asd"),
-                 Product(name: "name", price: 10, description: "asd"),
-                 Product(name: "name", price: 10, description: "asd")]
-            )
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        printMachineTimeInMicroseconds(inn:"cellForItemAt") //55225 - 54823 = 402 microsecond / 0.4ms in iphone 14 pro simulator
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
+            //this puts into the main queue so resolves the issue ->
+            //DispatchQueue.main.async {
+                crashvm.shared.productList.accept(
+                    [Product(name: "2name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd")]
+                )
+           // }
         }
         // Always use the correct method to dequeue the cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell, let data:Product = crashvm.shared.productList.value[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
-        //print("point2")
 ```
 
 ```
