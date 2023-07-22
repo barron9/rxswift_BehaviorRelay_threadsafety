@@ -30,34 +30,34 @@ class ViewController: UIViewController {
     @IBAction func click(_ sender: Any) {
         count += 1
         //while(true){
-            if(count % 2 == 0){
-                DispatchQueue.global(qos: .background).async {
-                    crashvm.shared.productList.accept(
-                        [Product(name: "2name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd")]
-                    )
-                }
-                
-            }else{
-                DispatchQueue.global(qos: .background).async {
-                    
-                    crashvm.shared.productList.accept(
-                        [Product(name: "2name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd"),
-                         Product(name: "name", price: 10, description: "asd")]
-                    )
-                }
-                
+        if(count % 2 == 0){
+            DispatchQueue.global(qos: .background).async {
+                crashvm.shared.productList.accept(
+                    [Product(name: "2name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd")]
+                )
             }
             
-     //   }
+        }else{
+            DispatchQueue.global(qos: .background).async {
+                
+                crashvm.shared.productList.accept(
+                    [Product(name: "2name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd"),
+                     Product(name: "name", price: 10, description: "asd")]
+                )
+            }
+            
+        }
+        
+        //   }
         
     }
     let dataSource = MyCollectionViewDataSource()
@@ -65,13 +65,18 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
         
-        crashvm.shared.productList.observe(on: MainScheduler.instance).subscribe(onNext: {[weak self]_ in
-          // if (crashvm.shared.productList.value.count != 0) {
+        
+        crashvm.shared.productList.observe(on: MainScheduler.instance).subscribe(
+            onNext: {[weak self]_ in
+                // if (crashvm.shared.productList.value.count != 0) {
                 self?.collectionView.reloadData()
-            
-        })
+                print("reload called")
+            },
+            onError: { error in
+                // This block will execute on the main thread
+                // print("Error: \(error)")
+            })
         .disposed(by: disposebag)
         collectionView.dataSource = dataSource
         // Register the cell class with the collection view
@@ -115,7 +120,7 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     let data :[String]? = nil
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       // print("point1")
+        // print("point1")
         
         let count = crashvm.shared.productList.value.count
         //fix for this issue is >
@@ -162,14 +167,14 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     func printMachineTimeInMicroseconds(inn:String) {
         // Get the current date and time
         let currentTime = Date()
-
+        
         // Get the current time in microseconds
         let microSeconds = Calendar.current.component(.nanosecond, from: currentTime) / 1000
-
+        
         // Print the time in microseconds
         print("Machine time in microseconds: \(microSeconds) µs \(inn)")
     }
-
+    
 }
 
 public extension Array {
