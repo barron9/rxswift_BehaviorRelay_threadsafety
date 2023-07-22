@@ -1,5 +1,5 @@
-# rxswift_behavioursubject_threadsafety
-reproduce the problem
+# rxswift_BehaviorRelay_threadsafety
+reproduce the problem and fix
 
 ```
 2023-07-22 17:44:47.944362+0300 test123[4206:4954563] *** Assertion failure in -[UICollectionView _createPreparedCellForItemAtIndexPath:withLayoutAttributes:applyAttributes:isFocused:notify:], UICollectionView.m:3390
