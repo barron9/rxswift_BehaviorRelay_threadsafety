@@ -1,6 +1,27 @@
 # rxswift_BehaviorRelay_threadsafety
 reproduce the problem and fix
 
+```swift
+class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
+    let data :[String]? = nil
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("point1")
+        
+        let count = crashvm.shared.productList.value.count
+        //fix for this issue is >
+        //DispatchQueue.main.async {
+        crashvm.shared.productList.accept(
+            [Product(name: "name", price: 10, description: "asd"),
+             Product(name: "name1", price: 11, description: "asd1"),
+             Product(name: "name2", price: 12, description: "asd2"),
+             Product(name: "name3", price: 13, description: "asd3"),Product(name: "name33", price: 13, description: "asd3")]
+        )
+        //  }
+        
+        return count
+    }
+```    
 ```
 2023-07-22 17:44:47.944362+0300 test123[4206:4954563] *** Assertion failure in -[UICollectionView _createPreparedCellForItemAtIndexPath:withLayoutAttributes:applyAttributes:isFocused:notify:], UICollectionView.m:3390
 2023-07-22 17:44:47.975588+0300 test123[4206:4954563] *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'the cell returned from -collectionView:cellForItemAtIndexPath: does not have a reuseIdentifier - cells must be retrieved by calling -dequeueReusableCellWithReuseIdentifier:forIndexPath:'
