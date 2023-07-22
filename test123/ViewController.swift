@@ -13,7 +13,7 @@ class crashvm{
     
     static let shared = crashvm()
     
-    var productList = BehaviorRelay<[Product]>(value: []) // products list. is expandable when lazy load is enabled.
+    var productList = BehaviorRelay<[Product]>(value: [Product(name: "name", price: 10, description: "asd")]) // products list. is expandable when lazy load is enabled.
 
 }
 
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
    
         
-        DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 3.8){
+        DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 3.7){
             crashvm.shared.productList.accept(
                 [Product(name: "name", price: 10, description: "asd")]
             )
@@ -47,7 +47,10 @@ class ViewController: UIViewController {
                  Product(name: "name3", price: 13, description: "asd3"),Product(name: "name33", price: 13, description: "asd3")]
             )
         }
-
+        crashvm.shared.productList.observe(on: MainScheduler.instance).subscribe(onNext: {[weak self]_ in
+            self?.collectionView.reloadData()
+        })
+        .disposed(by: disposebag)
         collectionView.dataSource = dataSource
         // Register the cell class with the collection view
         collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "CellReuseIdentifier")
