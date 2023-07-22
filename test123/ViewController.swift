@@ -96,13 +96,12 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Always use the correct method to dequeue the cell
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell, let data:Product = crashvm.shared.productList.value[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
         
-        if let data:Product = crashvm.shared.productList.value[safe: indexPath.row]{
-            cell.labelo.text = data.name
-        }
+        cell.labelo.text = data.name
+        
         // Configure the cell with data here
         return cell
         /*
