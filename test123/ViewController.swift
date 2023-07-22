@@ -123,11 +123,12 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         //or
         //DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 2.6){
         //  }
-        
+        printMachineTimeInMicroseconds(inn:"numberofitems")
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        printMachineTimeInMicroseconds(inn:"cellForItemAt") //55225 - 54823 = 402 microsecond / 0.4ms in iphone 14 pro simulator
         DispatchQueue.global(qos: .background).async {
             
             crashvm.shared.productList.accept(
@@ -158,6 +159,17 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
          
          */
     }
+    func printMachineTimeInMicroseconds(inn:String) {
+        // Get the current date and time
+        let currentTime = Date()
+
+        // Get the current time in microseconds
+        let microSeconds = Calendar.current.component(.nanosecond, from: currentTime) / 1000
+
+        // Print the time in microseconds
+        print("Machine time in microseconds: \(microSeconds) µs \(inn)")
+    }
+
 }
 
 public extension Array {
