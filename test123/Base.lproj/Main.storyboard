@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="MKS-zR-mnh">
-                                <rect key="frame" x="16" y="59" width="361" height="759"/>
+                                <rect key="frame" x="16" y="59" width="361" height="449"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zde-Pb-8Du">
                                     <size key="itemSize" width="128" height="128"/>
@@ -46,11 +46,21 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UgY-za-30c">
+                                <rect key="frame" x="103.00000000000001" y="650" width="187.33333333333337" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="check this double tap"/>
+                                <connections>
+                                    <action selector="click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Hg-rT-THI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="MKS-zR-mnh" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="53W-gW-iMN"/>
+                            <constraint firstItem="UgY-za-30c" firstAttribute="centerX" secondItem="MKS-zR-mnh" secondAttribute="centerX" id="1Uz-kh-rU4"/>
+                            <constraint firstItem="MKS-zR-mnh" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-310" id="53W-gW-iMN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="UgY-za-30c" secondAttribute="bottom" constant="133" id="BQq-na-pPP"/>
                             <constraint firstItem="MKS-zR-mnh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="iMo-ol-hfp"/>
                             <constraint firstItem="MKS-zR-mnh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="pSa-Uv-rqT"/>
                             <constraint firstItem="MKS-zR-mnh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="qv6-Pr-9ar"/>

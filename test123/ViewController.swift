@@ -26,32 +26,51 @@ struct Product {
 class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    var count = 0
+    @IBAction func click(_ sender: Any) {
+        count += 1
+        //while(true){
+            if(count % 2 == 0){
+                DispatchQueue.global(qos: .background).async {
+                    crashvm.shared.productList.accept(
+                        [Product(name: "2name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd")]
+                    )
+                }
+                
+            }else{
+                DispatchQueue.global(qos: .background).async {
+                    
+                    crashvm.shared.productList.accept(
+                        [Product(name: "2name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd"),
+                         Product(name: "name", price: 10, description: "asd")]
+                    )
+                }
+                
+            }
+            
+     //   }
+        
+    }
     let dataSource = MyCollectionViewDataSource()
     let disposebag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        DispatchQueue.main
-        //.global(qos: .unspecified)
-            .asyncAfter(deadline: DispatchTime.now() + 0.6){
-                crashvm.shared.productList.accept(
-                    [Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd"),
-                     Product(name: "name", price: 10, description: "asd")]
-                )
-            }
-        
+    
         
         crashvm.shared.productList.observe(on: MainScheduler.instance).subscribe(onNext: {[weak self]_ in
-            self?.collectionView.reloadData()
+          // if (crashvm.shared.productList.value.count != 0) {
+                self?.collectionView.reloadData()
+            
         })
         .disposed(by: disposebag)
         collectionView.dataSource = dataSource
@@ -96,30 +115,32 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     let data :[String]? = nil
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("point1")
+       // print("point1")
         
         let count = crashvm.shared.productList.value.count
         //fix for this issue is >
         //DispatchQueue.main.async {
         //or
         //DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 2.6){
-        crashvm.shared.productList.accept(
-            [Product(name: "name", price: 10, description: "asd"),
-             Product(name: "name1", price: 11, description: "asd1"),
-             Product(name: "name2", price: 12, description: "asd2"),
-             Product(name: "name3", price: 13, description: "asd3"),Product(name: "name33", price: 13, description: "asd3")]
-        )
         //  }
         
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        DispatchQueue.global(qos: .background).async {
+            
+            crashvm.shared.productList.accept(
+                [Product(name: "2name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd")]
+            )
+        }
         // Always use the correct method to dequeue the cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell, let data:Product = crashvm.shared.productList.value[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
-        print("point2")
+        //print("point2")
         
         cell.labelo.text = data.name
         
