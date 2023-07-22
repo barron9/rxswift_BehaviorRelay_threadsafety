@@ -33,20 +33,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
    
         
-        DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 3.7){
+        DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 0.6){
             crashvm.shared.productList.accept(
-                [Product(name: "name", price: 10, description: "asd")]
+                [Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name", price: 10, description: "asd")]
             )
         }
         
-        DispatchQueue.global(qos: .unspecified).asyncAfter(deadline: DispatchTime.now() + 3.8){
-            crashvm.shared.productList.accept(
-                [Product(name: "name", price: 10, description: "asd"),
-                 Product(name: "name1", price: 11, description: "asd1"),
-                 Product(name: "name2", price: 12, description: "asd2"),
-                 Product(name: "name3", price: 13, description: "asd3"),Product(name: "name33", price: 13, description: "asd3")]
-            )
-        }
+       
         crashvm.shared.productList.observe(on: MainScheduler.instance).subscribe(onNext: {[weak self]_ in
             self?.collectionView.reloadData()
         })
@@ -93,7 +94,16 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     let data :[String]? = nil
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("run1")
+       
         let count = crashvm.shared.productList.value.count
+            crashvm.shared.productList.accept(
+                [Product(name: "name", price: 10, description: "asd"),
+                 Product(name: "name1", price: 11, description: "asd1"),
+                 Product(name: "name2", price: 12, description: "asd2"),
+                 Product(name: "name3", price: 13, description: "asd3"),Product(name: "name33", price: 13, description: "asd3")]
+            )
+  
         return count
     }
 
@@ -102,7 +112,8 @@ class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellReuseIdentifier", for: indexPath) as? MyCollectionViewCell, let data:Product = crashvm.shared.productList.value[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
-        
+        print("run2")
+
         cell.labelo.text = data.name
         
         // Configure the cell with data here
