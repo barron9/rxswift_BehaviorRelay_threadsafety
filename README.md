@@ -1,5 +1,8 @@
 # rxswift_BehaviorRelay_threadsafety
 reproduce the problem and fix
+there is 0.4 ms latency between datasource delegate numberOfItemsInSection and itemsAtRow methods , so if any background thread changes the rxbehavioralrelay it will call ```collectionView.reloadData()```but it goes down continue executing if done for several times to guard statement.
+
+//55225 - 54823 = 402 microsecond / 0.4ms in iphone 14 pro simulator
 
 ```swift
 class MyCollectionViewDataSource: NSObject, UICollectionViewDataSource {
